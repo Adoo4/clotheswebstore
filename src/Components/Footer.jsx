@@ -15,7 +15,9 @@ let Footer = ()=>{
 			bgcolor: '#333333',
 			color: 'white',
 			padding: '2rem 0',
-			mt: 'auto', // Ensures it pushes itself down to the bottom
+			mt: 'auto',
+			justifySelf:"flex-end",
+			bottom:"0%"
 		  }}
 		>
 		  <Container maxWidth="lg">

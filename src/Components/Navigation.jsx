@@ -27,6 +27,11 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import CottageIcon from '@mui/icons-material/Cottage';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+
+
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
 
 const StyledSearch = styled("div")(({ theme }) => ({
   position: "relative",
@@ -124,6 +129,21 @@ export default function Navigation({ user, setuser }) {
 
     navigation(`/search/${searchKey}`)
   }
+
+//CART NOTOFIKACIJA
+
+function notificationsLabel(count) {
+  if (count === 0) {
+    return 'no notifications';
+  }
+  if (count > 99) {
+    return 'more than 99 notifications';
+  }
+  return `${count} notifications`;
+}
+
+
+
 
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#333', width:"100%" }}>
@@ -331,8 +351,22 @@ export default function Navigation({ user, setuser }) {
               </Box>
             </Box>
           </Drawer>
+          
         </Toolbar>
+        
       </Container>
+      <Box style={{backgroundColor: "#444444", width: "100%", height: "35px", display: "flex", alignItems:"center", justifyContent:"flex-end", paddingRight:"3rem", gap:"1rem"}}>
+      
+      <Badge badgeContent={4} sx={{color:"white", borderRadius:"50%"}}>
+      <LocalMallIcon color="action" sx={{color:"#ED6C02"}} />
+    </Badge>
+
+   
+
+
+
+      </Box>
+    
     </AppBar>
   );
 }

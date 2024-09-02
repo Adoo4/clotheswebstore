@@ -146,15 +146,15 @@ let SneakersAll = ({ user, setuser }) => {
         gap: "1rem",
 
         width: {
-            xs: '100%',  // Applies when the screen is xs (0px and up)
-            sm: '80%',   // Applies when the screen is sm (600px and up)
-            md: '40%',  // Applies when the screen is md (900px and up)
+            xs: '100%',  
+            sm: '80%',   
+            md: '40%',  
         },
 
         flexWrap: {
-            xs: 'wrap',  // Applies when the screen is xs (0px and up)
-            sm: 'nowrap',   // Applies when the screen is sm (600px and up)
-            md: 'nowrap',  // Applies when the screen is md (900px and up)
+            xs: 'wrap',  
+            sm: 'nowrap',   
+            md: 'nowrap',  
         },
     };
 
@@ -205,10 +205,10 @@ let SneakersAll = ({ user, setuser }) => {
 
     const handleAddSize = () => {
         if (currentSize && !selectedSizes.includes(currentSize)) {
-            setSelectedSizes([...selectedSizes, currentSize]); // Add the selected size to the array
+            setSelectedSizes([...selectedSizes, currentSize]); 
             setNewArticle({ ...newArticle, sizes: selectedSizes })
         }
-        setCurrentSize(''); // Clear the current selection
+        setCurrentSize(''); 
     };
 
     let addItem = async () => {
@@ -292,7 +292,7 @@ let SneakersAll = ({ user, setuser }) => {
         setItemToDelete({ ...item });
         setOpenWarning(true);
     };
-    return (<>
+    return (<div style={{height:"100%"}}>
         {!sneakersall.length ?
             <Box sx={{ display: 'flex', height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
                 <CircularProgress size={140} />
@@ -303,7 +303,7 @@ let SneakersAll = ({ user, setuser }) => {
   container
   sx={{
     padding: { xs: 0, md: "1rem" },
-    justifyContent: "center", 
+    justifyContent: "flex-start", 
     alignItems: "center", 
     minHeight: "100vh",
   }}
@@ -318,7 +318,7 @@ let SneakersAll = ({ user, setuser }) => {
       md={4}
       key={index}
     >
-      <Card sx={{ maxWidth: 345, padding: "1rem", margin: "auto" }}>
+      <Card sx={{ maxWidth: "100%", padding: "1rem", margin: "auto" }}>
         {user?.role === "admin" && (
           <Box sx={{ display: "flex", justifyContent: "space-around", gap: "1rem", backgroundColor: "#f4f2f3", borderRadius: "10px" }}>
             <Button size="small" color="success" sx={{ display: "flex", gap: "8px", alignItems: "center" }} onClick={() => handleeditItem(e)}>
@@ -706,7 +706,7 @@ let SneakersAll = ({ user, setuser }) => {
 
             </>
 
-        } </>
+        } </div>
     )
 }
 

@@ -178,7 +178,7 @@ let Admin = ({ user, setuser }) => {
 
 
   return (
-    <>
+    <div style={{height:"100dvh"}}>
       {error ? (
         <Alert severity="error">
           <AlertTitle>{error}</AlertTitle>
@@ -344,7 +344,7 @@ let Admin = ({ user, setuser }) => {
           </Box>
         </Box>
       </Modal>
-    </>
+    </div>
 
   );
 }
