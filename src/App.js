@@ -30,6 +30,7 @@ function App() {
  
   let [user, setuser] = useState(null)
   let [allData, setAllData] = useState([])
+  let [cart, setCart] = useState([])
 
 
   useEffect(() => {
@@ -98,21 +99,28 @@ try {
 getAllData();
 
 } , [])
+
+
+useEffect(() => {
+  if(!user){
+  let savedCart = JSON.parse(sessionStorage.getItem("cartitems")) || [];
+  setCart(savedCart);}
+}, []);
   return (
 
     <div style={{display: "flex", flexDirection:"column"}}>
     <BrowserRouter style={{display: "flex", flexDirection:"column", justifyContent:"space-between"}} >
-      <Navigation user={user} setuser={setuser}  />
+      <Navigation user={user} setuser={setuser} cart={cart} setCart={setCart} />
       <Routes style={{display: "flex", flexDirection:"column"}}>
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<LandingPage />} />
         <Route path="/login" element={<Loginpage user={user} setuser={setuser}  />} />
         <Route path="/register" element={<Registerpage />} />
         <Route path="/home" element={<Homepage  />} />
-        <Route path="/sneakers" element={<SneakersAll user={user} setuser={setuser}/>} />
-        <Route path="/tops" element={<TopsAll user={user} setuser={setuser}/>} />
-        <Route path="/bottoms" element={<BottomsAll user={user} setuser={setuser}/>} />
-        <Route path="/accessories" element={<AccessoriesAll user={user} setuser={setuser}/>} />
+        <Route path="/sneakers" element={<SneakersAll user={user} setuser={setuser} cart={cart} setCart={setCart}/>} />
+        <Route path="/tops" element={<TopsAll user={user} setuser={setuser} cart={cart} setCart={setCart}/>} />
+        <Route path="/bottoms" element={<BottomsAll user={user} setuser={setuser} cart={cart} setCart={setCart}/>} />
+        <Route path="/accessories" element={<AccessoriesAll user={user} setuser={setuser} cart={cart} setCart={setCart}/>} />
         <Route path="/access" element={<AccesRoute/>} />
         <Route path="/:id/:name" element={<DetailsPage />} />
         <Route path="search/:searchquery" element={<SearchData allData={allData} setAllData={setAllData} />} />

@@ -28,7 +28,7 @@ import { FormControl, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
-let SneakersAll = ({ user, setuser }) => {
+let SneakersAll = ({ user, setuser, cart, setCart }) => {
     let [sneakersall, setsnakersall] = useState([])
     let [open, setOpen] = useState(false);
     let [selectedSizes, setSelectedSizes] = useState([]);
@@ -146,7 +146,7 @@ let SneakersAll = ({ user, setuser }) => {
         gap: "1rem",
 
         width: {
-            xs: '100%',  
+            xs: '100%', 
             sm: '80%',   
             md: '40%',  
         },
@@ -292,6 +292,19 @@ let SneakersAll = ({ user, setuser }) => {
         setItemToDelete({ ...item });
         setOpenWarning(true);
     };
+
+    let addToCart = (e) => {
+        const updatedCart = [...cart, e];
+        setCart(updatedCart);
+        if(!user) {
+            sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
+        } 
+        if(user) {
+
+            
+        }
+        
+      };
     return (<div style={{height:"100%"}}>
         {!sneakersall.length ?
             <Box sx={{ display: 'flex', height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
@@ -357,7 +370,7 @@ let SneakersAll = ({ user, setuser }) => {
             <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/bottoms`)}>
               <InfoIcon />DETAILS
             </Button>
-            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }}>
+            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }} onClick={ ()=>addToCart(e)}>
               <ShoppingBasketIcon /> PURCHASE
             </Button>
           </Box>

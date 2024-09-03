@@ -99,7 +99,7 @@ const search = (
   </StyledSearch>
 );
 
-export default function Navigation({ user, setuser }) {
+export default function Navigation({ user, setuser, cart, setcart }) {
   
   const [open, setState] = useState(false);
   let [searchKey, setSearchKey] = useState("")
@@ -356,11 +356,14 @@ function notificationsLabel(count) {
         
       </Container>
       <Box style={{backgroundColor: "#444444", width: "100%", height: "35px", display: "flex", alignItems:"center", justifyContent:"flex-end", paddingRight:"3rem", gap:"1rem"}}>
-      
-      <Badge badgeContent={4} sx={{color:"white", borderRadius:"50%"}}>
-      <LocalMallIcon color="action" sx={{color:"#ED6C02"}} />
+      {cart.length? <Chip  color="warning" label="CHECKOUT" size="small" /> : null}
+        
+        
+        
+      <Badge badgeContent={cart.length} color="warning">
+      <LocalMallIcon color="action" sx={{color:"white"}} />
     </Badge>
-
+    
    
 
 
