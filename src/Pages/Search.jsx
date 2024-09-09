@@ -10,8 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 let SearchData = ({ allData }) => {
-  const { searchquery } = useParams();
-  const [filteredData, setFilteredData] = useState(allData);
+  let { searchquery } = useParams();
+  let [filteredData, setFilteredData] = useState(allData);
 
   useEffect(() => {
     if (searchquery) {

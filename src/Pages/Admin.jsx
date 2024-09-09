@@ -48,7 +48,7 @@ let Admin = ({ user, setuser }) => {
     role: null
 
   })
-
+  let token = (localStorage.getItem('LocalShopAuth') || sessionStorage.getItem('LocalShopAuth'));
 
   useEffect(() => {
     let getUsers = async () => {
@@ -67,7 +67,7 @@ let Admin = ({ user, setuser }) => {
     getUsers();
   }, []);
 
-  const style2 = {
+  let style2 = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -119,7 +119,7 @@ let Admin = ({ user, setuser }) => {
     console.log(usertoupdate)
 
     try {
-      let response = await axios.put("http://localhost:5757/user/userupdate", usertoupdate)
+      let response = await axios.put("http://localhost:5757/user/userupdate", usertoupdate, { headers: { Authorization: `Bearer ${token}` } })
 
       setusers(users.map((item) => item._id === response.data._id ? { ...response.data, editable: false, edit: true } : { ...item, editable: false, edit: true }))
 
@@ -144,7 +144,7 @@ let Admin = ({ user, setuser }) => {
   let deleteItem = async (user) => {
     try {
 
-      const response = await axios.delete(`http://localhost:5757/user/deleteuser/${user._id}`);
+      let response = await axios.delete(`http://localhost:5757/user/deleteuser/${user._id}`, { headers: { Authorization: `Bearer ${token}` } });
       console.log('User deleted:', response.data);
       setusers(users.filter((e) => e._id !== user._id))
       setOpenWarning(false);

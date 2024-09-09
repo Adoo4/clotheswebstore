@@ -1,38 +1,39 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import axios from 'axios'
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import InfoIcon from '@mui/icons-material/Info';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import CircularProgress from '@mui/material/CircularProgress';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import SendIcon from '@mui/icons-material/Send';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Checkbox from '@mui/material/Checkbox';
-import { FormControl, FormControlLabel } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import { useState, useEffect } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import axios from "axios"
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import InfoIcon from "@mui/icons-material/Info";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CircularProgress from "@mui/material/CircularProgress";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SendIcon from "@mui/icons-material/Send";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import Checkbox from "@mui/material/Checkbox";
+import { FormControl, FormControlLabel } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
-let SneakersAll = ({ user, setuser, cart, setCart }) => {
+let SneakersAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
     let [sneakersall, setsnakersall] = useState([])
     let [open, setOpen] = useState(false);
     let [selectedSizes, setSelectedSizes] = useState([]);
-    let [currentSize, setCurrentSize] = useState('');
+    let [currentSize, setCurrentSize] = useState("");
+    let [error, seterror] = useState("")
     let [newArticle, setNewArticle] = useState({
         name: "",
         brand: "",
@@ -43,6 +44,11 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
         description: ""
 
     })
+
+    let token = (localStorage.getItem('LocalShopAuth') || sessionStorage.getItem('LocalShopAuth'));
+
+
+
 
     let [editedArticle, setEditedArticle] = useState({
         name: "",
@@ -71,16 +77,19 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                 setsnakersall(response.data)
 
             } catch (e) {
-                console.log(e)
+                console.error("Error adding to cart:", e.message);
             }
 
         }
         getSnakers();
 
     }, [])
+
+
+
     useEffect(() => {
         console.log("Prije", sizenumber)
-        if (itemtoedit && itemtoedit.sizes) { // Add a check for null/undefined
+        if (itemtoedit && itemtoedit.sizes) {
             setsizenumber([...itemtoedit.sizes]);
 
         }
@@ -88,8 +97,8 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
     }, [itemtoedit]);
 
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
+    let handleOpen = () => setOpen(true);
+    let handleClose = () => {
         setOpen(false);
         setNewArticle({
             name: "",
@@ -104,40 +113,28 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
     }
 
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "70%",
-        bgcolor: 'lightgray',
+    let style = {
+        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%",
+        bgcolor: "lightgray",
         boxShadow: 24,
         p: 4,
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
 
-        width: {
-            xs: '100%',  // Applies when the screen is xs (0px and up)
-            sm: '80%',   // Applies when the screen is sm (600px and up)
-            md: '60%',  // Applies when the screen is md (900px and up)
-        },
+        width: { xs: "100%", sm: "80%", md: "60%", },
 
-        flexWrap: {
-            xs: 'wrap',  // Applies when the screen is xs (0px and up)
-            sm: 'nowrap',   // Applies when the screen is sm (600px and up)
-            md: 'nowrap',  // Applies when the screen is md (900px and up)
-        },
+        flexWrap: { xs: "wrap", sm: "nowrap", md: "nowrap", },
     };
 
 
-    const style2 = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+    let style2 = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         width: "70%",
-        bgcolor: '#f65656',
+        bgcolor: "#f65656",
 
         boxShadow: 24,
         p: 4,
@@ -146,96 +143,110 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
         gap: "1rem",
 
         width: {
-            xs: '100%', 
-            sm: '80%',   
-            md: '40%',  
+            xs: "100%",
+            sm: "80%",
+            md: "40%",
         },
 
         flexWrap: {
-            xs: 'wrap',  
-            sm: 'nowrap',   
-            md: 'nowrap',  
+            xs: "wrap",
+            sm: "nowrap",
+            md: "nowrap",
         },
     };
 
-    const sizes = [
+    let sizes = [
         {
             value: 8,
-            label: '8',
+            label: "8",
         },
         {
             value: 9,
-            label: '9',
+            label: "9",
         },
         {
             value: 10,
-            label: '10',
+            label: "10",
         },
         {
             value: 11,
-            label: '11',
+            label: "11",
         },
         {
             value: 12,
-            label: '12',
+            label: "12",
         },
         {
             value: 13,
-            label: '13',
+            label: "13",
         },
         {
             value: 14,
-            label: '14',
+            label: "14",
         },
         {
             value: 15,
-            label: '15',
+            label: "15",
         },
         {
             value: 16,
-            label: '16',
+            label: "16",
         },
     ];
 
 
 
-    const handleSelectChange = (e) => {
+    let handleSelectChange = (e) => {
         setCurrentSize(Number(e.target.value));
     };
 
-    const handleAddSize = () => {
+    let handleAddSize = () => {
         if (currentSize && !selectedSizes.includes(currentSize)) {
-            setSelectedSizes([...selectedSizes, currentSize]); 
+            setSelectedSizes([...selectedSizes, currentSize]);
             setNewArticle({ ...newArticle, sizes: selectedSizes })
         }
-        setCurrentSize(''); 
+        setCurrentSize("");
     };
 
     let addItem = async () => {
         try {
-            console.log("preparing to send request")
-            console.log(newArticle)
-            let response = await axios.post("http://localhost:5757/sneakers/sneakers", newArticle);
-            console.log("request sent")
-            setsnakersall(prevSneakers => [...prevSneakers, response.data]);
-        }
-        catch (e) {
-            console.log(e.message)
-        }
+            console.log("preparing to send request");
+            console.log(newArticle);
 
-    }
-    let deleteItem = async (item) => {
-        try {
 
-            const response = await axios.delete(`http://localhost:5757/sneakers/deletesneakers/${item._id}`);
-            console.log('Sneaker deleted:', response.data);
-            setsnakersall(sneakersall.filter((e) => e._id !== item._id))
-            setOpenWarning(false);
-        } catch (error) {
-            console.error('Error deleting sneaker:', error);
+
+            let response = await axios.post(
+                "http://localhost:5757/sneakers/sneakers", newArticle, { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if (response) {
+                let response2 = await axios.post(
+                    "http://localhost:5757/allproducts/post", { ...newArticle, _id: response.data._id }, { headers: { Authorization: `Bearer ${token}` } }
+                );
+                console.log("request sent");
+                setsnakersall(prevSneakers => [...prevSneakers, response.data]);
+            }
+        } catch (e) {
+            console.error("Error adding to cart:", e.message);
         }
     };
-
+    let deleteItem = async (item) => {
+        try {
+            let response = await axios.delete(
+                `http://localhost:5757/sneakers/deletesneakers/${item._id}`,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            let response2 = await axios.delete(
+                `http://localhost:5757/allproducts/delete/${item._id}`,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            console.log("Sneaker deleted:", response.data);
+            setsnakersall(sneakersall.filter((e) => e._id !== item._id));
+            setOpenWarning(false);
+        } catch (e) {
+            console.error("Error adding to cart:", e.message);
+        }
+    };
     let handleeditItem = (item) => {
 
         setitemtoedit({ ...item });
@@ -244,7 +255,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
     }
     // let [sizenumber, setsizenumber] = useState([])
     let sizehandler = (e) => {
-        const value = Number(e.target.value); //konstantnost
+        let value = Number(e.target.value); //konstantnost
         setsizenumber((prevSizenumber) => {
             let updatedSizenumber = [...prevSizenumber];
 
@@ -275,120 +286,223 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
             _id: id
         };
 
-        console.log(sizenumber)
-        setsnakersall(sneakersall.map((e) => e._id !== id ? e : { ...e, ...toEdit }))
+        console.log(sizenumber);
+        setsnakersall(sneakersall.map((e) => e._id !== id ? e : { ...e, ...toEdit }));
 
         try {
-            let response = await axios.put("http://localhost:5757/sneakers/editsneaker", toEdit)
-
-            setstartedit(false)
+            let response = await axios.put(
+                "http://localhost:5757/sneakers/editsneaker",
+                toEdit,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            let response2 = await axios.put(
+                "http://localhost:5757/allproducts/edit",
+                toEdit,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            setstartedit(false);
         } catch (e) {
-            console.log(e.message)
+            console.error("Error adding to cart:", e.message);
         }
-
-    }
+    };
 
     let handleOpenWarning = (item) => {
         setItemToDelete({ ...item });
         setOpenWarning(true);
     };
 
-    let addToCart = (e) => {
-        const updatedCart = [...cart, e];
-        setCart(updatedCart);
-        if(!user) {
-            sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
-        } 
-        if(user) {
 
-            
-        }
-        
-      };
-    return (<div style={{height:"100%"}}>
+
+
+
+    let addToCart = async (product) => {
+        console.log(cart);
+
+
+
+
+        if (user) {
+
+
+            let item = {
+                user: user._id,
+                items: [
+                    {
+                        productId: product._id,
+                        quantity: 1
+                    }
+                ],
+            };
+            let existingItemIndex = cart.findIndex((e) => e.productId === product._id);
+
+            if (existingItemIndex !== -1) {
+
+
+                let updatedCart = cart.map((e, index) =>
+                    index === existingItemIndex ? { ...e, quantity: e.quantity + 1 } : e
+                );
+
+
+                setCart(updatedCart);
+                console.log(updatedCart[existingItemIndex]);
+
+
+                try {
+                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: updatedCart[existingItemIndex] });
+                    console.log("Cart updated successfully");
+                } catch (e) {
+                    console.error("Error adding to cart:", e.message);
+                }
+
+            } else {
+                let newArticle = { productId: product._id, quantity: 1 }
+                let newCart = [...cart, newArticle];
+
+
+
+                console.log(cart)
+
+
+
+
+
+                try {
+                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: newArticle });
+                    setCart(newCart);
+                    console.log("Item added to cart successfully");
+                } catch (e) {
+                    console.error("Error adding to cart:", e.message);
+                }
+
+            }
+        } else {
+
+            let item = {
+                items: [
+                    {
+                        name: product.name,
+                        brand: product.brand,
+                        imageUrl: product.imageUrl,
+                        price: product.price,
+                        sizes: [...product.sizes],
+                        productId: product?._id,
+                        quantity: 1
+                    }
+                ],
+            };
+
+
+            let existingItemIndex = cart.findIndex((e) => e.productId === product._id);
+            console.log(existingItemIndex)
+            if (existingItemIndex !== -1) {
+
+
+
+
+                let updatedCart = cart.map((e, index) =>
+                    index === existingItemIndex ? { ...e, quantity: e.quantity + 1 } : e
+                );
+                setCart(updatedCart);
+                sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
+            } else {
+
+                setCart((prevCart) => {
+                    let updatedCart = [...prevCart, ...item.items];
+                    sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
+                    console.log(updatedCart)
+                    return updatedCart;
+                });
+            }
+
+            console.log(product);
+
+        };
+    }
+
+    return (<div style={{ height: "100%" }}>
         {!sneakersall.length ?
-            <Box sx={{ display: 'flex', height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
+            <Box sx={{ display: "flex", height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
                 <CircularProgress size={140} />
             </Box> :
 
-            <>  
+            <>
                 <Grid
-  container
-  sx={{
-    padding: { xs: 0, md: "1rem" },
-    justifyContent: "flex-start", 
-    alignItems: "center", 
-    minHeight: "100vh",
-  }}
-  spacing={{ xs: 1, md: 1 }}
-  columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
->
-  {sneakersall.map((e, index) => (
-    <Grid
-      item
-      xs={12} 
-      sm={4}
-      md={4}
-      key={index}
-    >
-      <Card sx={{ maxWidth: "100%", padding: "1rem", margin: "auto" }}>
-        {user?.role === "admin" && (
-          <Box sx={{ display: "flex", justifyContent: "space-around", gap: "1rem", backgroundColor: "#f4f2f3", borderRadius: "10px" }}>
-            <Button size="small" color="success" sx={{ display: "flex", gap: "8px", alignItems: "center" }} onClick={() => handleeditItem(e)}>
-              <EditNoteIcon />EDIT
-            </Button>
-            <Button size="small" color="error" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "coral" }} onClick={() => handleOpenWarning(e)}>
-              <DeleteForeverIcon />DELETE
-            </Button>
-          </Box>
-        )}
-        <CardMedia
-          sx={{
-            height: 170,
-            width: "100%",
-            padding: "0.5rem", 
-            objectFit: "cover",
-          }}
-          image={e?.imageUrl}
-          title={e?.name}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h7" component="div" sx={{ fontWeight: "bold" }}>
-            {e?.name}
-          </Typography>
-          <Box sx={{ backgroundColor: "white", display: "flex", flexDirection: "column" }}>
-            <Typography gutterBottom variant="h9" component="div" sx={{ color: "#ed6b01" }}>
-              <Typography variant="h10" sx={{ color: "black" }}>Price:</Typography>
-              {" " + e?.price + " BAM"}
-            </Typography>
-            <Typography variant="h10" sx={{ color: "black" }}>Brand: {" " + e.brand}</Typography>
-            <Typography variant="h10" sx={{ color: "black" }}>Color: {" " + e.color}</Typography>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Box sx={{ display: "flex", justifyContent: "space-between", gap: "1rem", width: "100%" }}>
-            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/bottoms`)}>
-              <InfoIcon />DETAILS
-            </Button>
-            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }} onClick={ ()=>addToCart(e)}>
-              <ShoppingBasketIcon /> PURCHASE
-            </Button>
-          </Box>
-        </CardActions>
-      </Card>
-    </Grid>
-  ))}
-  {user && (
-    <Box sx={{ width: "345px", maxWidth: 345, height: "432px", padding: "1rem", display: "flex", justifyContent: "center", flexDirection: "column", margin: "auto" }}>
-      <AddCircleIcon onClick={handleOpen} sx={{
-        fontSize: 140, alignSelf: "center", justifySelf: "center", transition: 'color 0.3s',
-        '&:hover': { color: 'lightblue' }, 
-        '&:active': { color: 'green' }, 
-      }} />
-      <Typography sx={{ alignSelf: "center" }}>ADD ITEM</Typography>
-    </Box>
-  )}
-</Grid>
+                    container
+                    sx={{
+                        padding: { xs: 0, md: "1rem" },
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        minHeight: "100vh",
+                    }}
+                    spacing={{ xs: 1, md: 1 }}
+                    columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
+                >
+                    {sneakersall.map((e, index) => (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            key={index}
+                        >
+                            <Card sx={{ maxWidth: "100%", padding: "1rem", margin: "auto" }}>
+                                {user?.role === "admin" && (
+                                    <Box sx={{ display: "flex", justifyContent: "space-around", gap: "1rem", backgroundColor: "#f4f2f3", borderRadius: "10px" }}>
+                                        <Button size="small" color="success" sx={{ display: "flex", gap: "8px", alignItems: "center" }} onClick={() => handleeditItem(e)}>
+                                            <EditNoteIcon />EDIT
+                                        </Button>
+                                        <Button size="small" color="error" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "coral" }} onClick={() => handleOpenWarning(e)}>
+                                            <DeleteForeverIcon />DELETE
+                                        </Button>
+                                    </Box>
+                                )}
+                                <CardMedia
+                                    sx={{
+                                        height: 170,
+                                        width: "100%",
+                                        padding: "0.5rem",
+                                        objectFit: "cover",
+                                    }}
+                                    image={e?.imageUrl}
+                                    title={e?.name}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h7" component="div" sx={{ fontWeight: "bold" }}>
+                                        {e?.name}
+                                    </Typography>
+                                    <Box sx={{ backgroundColor: "white", display: "flex", flexDirection: "column" }}>
+                                        <Typography gutterBottom variant="h9" component="div" sx={{ color: "#ed6b01" }}>
+                                            <Typography variant="h10" sx={{ color: "black" }}>Price:</Typography>
+                                            {" " + e?.price + " BAM"}
+                                        </Typography>
+                                        <Typography variant="h10" sx={{ color: "black" }}>Brand: {" " + e.brand}</Typography>
+                                        <Typography variant="h10" sx={{ color: "black" }}>Color: {" " + e.color}</Typography>
+                                    </Box>
+                                </CardContent>
+                                <CardActions>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between", gap: "1rem", width: "100%" }}>
+                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/bottoms`)}>
+                                            <InfoIcon />DETAILS
+                                        </Button>
+                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }} onClick={() => addToCart(e)}>
+                                            <ShoppingBasketIcon /> PURCHASE
+                                        </Button>
+                                    </Box>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+                    {user && (
+                        <Box sx={{ width: "345px", maxWidth: 345, height: "432px", padding: "1rem", display: "flex", justifyContent: "center", flexDirection: "column", margin: "auto" }}>
+                            <AddCircleIcon onClick={handleOpen} sx={{
+                                fontSize: 140, alignSelf: "center", justifySelf: "center", transition: "color 0.3s",
+                                "&:hover": { color: "lightblue" },
+                                "&:active": { color: "green" },
+                            }} />
+                            <Typography sx={{ alignSelf: "center" }}>ADD ITEM</Typography>
+                        </Box>
+                    )}
+                </Grid>
                 <div>
 
                     <Modal
@@ -441,7 +555,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                             </Box>
 
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                                 <TextField
                                     id="outlined-select-sizes"
                                     select
@@ -467,7 +581,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                     disabled
                                     id="standard-disabled"
                                     label=""
-                                    value={selectedSizes.join(', ')} 
+                                    value={selectedSizes.join(", ")}
                                     variant="standard"
                                 />
 
@@ -524,7 +638,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                 <Box id="modal-modal-description" sx={{ mt: 2, display: "flex", flexDirection: "row", gap: "1rem", justifyContent: "flex-end" }}>
                                     <Button
                                         variant="outlined"
-                                        sx={{ color: "white", borderColor: " white", '&:hover': { borderColor: "#f7ed7e", color: "#f7ed7e" }, '&:active': { borderColor: "orange" } }}
+                                        sx={{ color: "white", borderColor: " white", "&:hover": { borderColor: "#f7ed7e", color: "#f7ed7e" }, "&:active": { borderColor: "orange" } }}
                                         onClick={() => setOpenWarning(false)}
                                     >
                                         Cancel
@@ -533,7 +647,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                     <Button
                                         onClick={() => deleteItem(itemToDelete)}
                                         variant="contained"
-                                        sx={{ color: "white", backgroundColor: "red", '&:hover': { backgroundColor: "darkred" } }}
+                                        sx={{ color: "white", backgroundColor: "red", "&:hover": { backgroundColor: "darkred" } }}
                                     >
                                         DELETE
                                     </Button>
@@ -567,10 +681,10 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                     defaultValue={itemtoedit.name}
                                     variant="standard"
                                     onChange={(e) => {
-                                        const value = e.target.value.trim(); 
+                                        let value = e.target.value.trim();
                                         setEditedArticle((prev) => ({
                                             ...prev,
-                                            name: value !== "" ? value : itemtoedit.name, 
+                                            name: value !== "" ? value : itemtoedit.name,
                                         }));
                                     }}
                                 />
@@ -583,10 +697,10 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                         variant="standard"
                                         sx={{ width: "60%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim(); 
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                brand: value !== "" ? value : itemtoedit.brand, 
+                                                brand: value !== "" ? value : itemtoedit.brand,
                                             }));
                                         }}
                                     />
@@ -601,26 +715,26 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                         inputProps={{ min: 0 }}
                                         defaultValue={itemtoedit.price}
                                         onChange={(e) => {
-                                            const value = Number(e.target.value.trim()); 
+                                            let value = Number(e.target.value.trim());
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                price: value !== "" ? value : itemtoedit.price, 
+                                                price: value !== "" ? value : itemtoedit.price,
                                             }));
                                         }}
                                     />
 
                                 </Box>
 
-                                <Box sx={{ border: "1px solid green", padding: 4, position: 'relative' }}>
+                                <Box sx={{ border: "1px solid green", padding: 4, position: "relative" }}>
                                     <Typography
                                         variant="h7"
                                         sx={{
-                                            position: 'absolute',
+                                            position: "absolute",
                                             top: -14,
                                             left: 16,
-                                            backgroundColor: '#d3d3d3',
-                                            color: '#737373',
-                                            padding: '0 8px',
+                                            backgroundColor: "#d3d3d3",
+                                            color: "#737373",
+                                            padding: "0 8px",
 
                                         }}
                                     >
@@ -653,6 +767,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
 
                                     </Grid>
                                 </Box>
+                              
 
 
                                 <Box sx={{ display: "flex", flexDirection: "row", gap: "1rem" }} >
@@ -664,10 +779,10 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                         variant="standard"
                                         sx={{ width: "30%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim(); 
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                color: value !== "" ? value : itemtoedit.color, 
+                                                color: value !== "" ? value : itemtoedit.color,
                                             }));
                                         }}
                                     />
@@ -679,10 +794,10 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                         variant="standard"
                                         sx={{ width: "60%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim(); 
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                imageUrl: value !== "" ? value : itemtoedit.umageUrl, 
+                                                imageUrl: value !== "" ? value : itemtoedit.umageUrl,
                                             }));
                                         }}
                                     />
@@ -695,10 +810,10 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                                     fullWidth
                                     defaultValue={itemtoedit.description}
                                     onChange={(e) => {
-                                        const value = e.target.value.trim(); 
+                                        let value = e.target.value.trim();
                                         setEditedArticle((prev) => ({
                                             ...prev,
-                                            description: value !== "" ? value : itemtoedit.description, 
+                                            description: value !== "" ? value : itemtoedit.description,
                                         }));
                                     }}
                                 />
@@ -718,6 +833,7 @@ let SneakersAll = ({ user, setuser, cart, setCart }) => {
                 </div>
 
             </>
+
 
         } </div>
     )

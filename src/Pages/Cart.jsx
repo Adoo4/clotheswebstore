@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,55 +6,70 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-let Cart = ({cart, setCart}) => {
+let Cart = ({ cart, setCart, user }) => {
+  let [products, setProducts] = useState([]);
 
-useEffect(()=> {
+  useEffect(() => {
+    let getCartItems = async () => {
+      try {
+        let response = await axios.get("http://localhost:5757/cart/get");
+        let productsInCart = response.data.items;
+        if(productsInCart) {
+          setCart(response.data.items);
+        }
+        
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
 
+    if (user) {
+      getCartItems();
+    } else {
+      let savedCart = JSON.parse(sessionStorage.getItem("cartitems")) || [];
+      setCart(savedCart);
+    }
+  }, []); 
 
-}, [])
+  let getProductDetails = (productId) => {
+    return products.find(product => product._id === productId) || {};
+  };
 
-
-
-
-return(
-
-
-<TableContainer component={Paper}>
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      <TableHead>
-        <TableRow>
-          <TableCell>Article name</TableCell>
-          <TableCell align="right">Price</TableCell>
-          <TableCell align="right">Quantity</TableCell>
-          <TableCell align="right">Total</TableCell>
-         
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow
-            key={row.name}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell component="th" scope="row">
-              {row.name}
-              {row.brand}
-              {row.color}
-            </TableCell>
-            <TableCell align="right">{row.price}</TableCell>
-            <TableCell align="right">{row.quantity}</TableCell>
-
-            <TableCell align="right">{row.total}</TableCell>
-            
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="cart table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Article Name</TableCell>
+            <TableCell align="right">Price</TableCell>
+            <TableCell align="right">Quantity</TableCell>
+            <TableCell align="right">Total</TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>)
+        </TableHead>
+        <TableBody>
+          {cart.items && cart.items.map((item, index) => {
+            let product = getProductDetails(item?.productId);
+            return (
+              <TableRow
+                key={item._id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {product?.name} - {product.brand} - {product.color}
+                </TableCell>
+                <TableCell align="right">{product?.price}</TableCell>
+                <TableCell align="right">{item?.quantity}</TableCell>
+                <TableCell align="right">{product?.price * item.quantity}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
-}
-
-
-
-export default Cart
+export default Cart;

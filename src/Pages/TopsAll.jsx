@@ -1,38 +1,39 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import axios from 'axios'
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import InfoIcon from '@mui/icons-material/Info';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import CircularProgress from '@mui/material/CircularProgress';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import SendIcon from '@mui/icons-material/Send';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Checkbox from '@mui/material/Checkbox';
-import { FormControl, FormControlLabel } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import { useState, useEffect } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import axios from "axios"
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import InfoIcon from "@mui/icons-material/Info";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CircularProgress from "@mui/material/CircularProgress";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SendIcon from "@mui/icons-material/Send";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import Checkbox from "@mui/material/Checkbox";
+import { FormControl, FormControlLabel } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
-let TopsAll = ({ user, setuser }) => {
-    let [topsall, settopsall] = useState([])
+let TopsAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
+    let [data, setdata] = useState([])
     let [open, setOpen] = useState(false);
     let [selectedSizes, setSelectedSizes] = useState([]);
-    let [currentSize, setCurrentSize] = useState('');
+    let [currentSize, setCurrentSize] = useState("");
+    let [error, seterror] = useState("")
     let [newArticle, setNewArticle] = useState({
         name: "",
         brand: "",
@@ -43,6 +44,11 @@ let TopsAll = ({ user, setuser }) => {
         description: ""
 
     })
+
+    const token = (localStorage.getItem('LocalShopAuth') || sessionStorage.getItem('LocalShopAuth'));
+
+
+
 
     let [editedArticle, setEditedArticle] = useState({
         name: "",
@@ -68,19 +74,22 @@ let TopsAll = ({ user, setuser }) => {
             try {
                 let response = await axios.get("http://localhost:5757/tops/gettops")
 
-                settopsall(response.data)
+                setdata(response.data)
 
             } catch (e) {
-                console.log(e)
+                console.error("Error adding to cart:", e.message);
             }
 
         }
         getSnakers();
 
     }, [])
+
+
+
     useEffect(() => {
         console.log("Prije", sizenumber)
-        if (itemtoedit && itemtoedit.sizes) { 
+        if (itemtoedit && itemtoedit.sizes) {
             setsizenumber([...itemtoedit.sizes]);
 
         }
@@ -88,8 +97,8 @@ let TopsAll = ({ user, setuser }) => {
     }, [itemtoedit]);
 
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
+    let handleOpen = () => setOpen(true);
+    let handleClose = () => {
         setOpen(false);
         setNewArticle({
             name: "",
@@ -104,40 +113,28 @@ let TopsAll = ({ user, setuser }) => {
     }
 
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "70%",
-        bgcolor: 'lightgray',
+    let style = {
+        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%",
+        bgcolor: "lightgray",
         boxShadow: 24,
         p: 4,
         display: "flex",
         flexDirection: "column",
         gap: "1rem",
 
-        width: {
-            xs: '100%', 
-            sm: '80%',   
-            md: '60%',  
-        },
+        width: { xs: "100%", sm: "80%", md: "60%", },
 
-        flexWrap: {
-            xs: 'wrap',  
-            sm: 'nowrap',   
-            md: 'nowrap',  
-        },
+        flexWrap: { xs: "wrap", sm: "nowrap", md: "nowrap", },
     };
 
 
-    const style2 = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+    let style2 = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         width: "70%",
-        bgcolor: '#f65656',
+        bgcolor: "#f65656",
 
         boxShadow: 24,
         p: 4,
@@ -146,99 +143,119 @@ let TopsAll = ({ user, setuser }) => {
         gap: "1rem",
 
         width: {
-            xs: '100%',  
-            sm: '80%',   
-            md: '40%', 
+            xs: "100%",
+            sm: "80%",
+            md: "40%",
         },
 
         flexWrap: {
-            xs: 'wrap', 
-            sm: 'nowrap',  
-            md: 'nowrap',  
+            xs: "wrap",
+            sm: "nowrap",
+            md: "nowrap",
         },
     };
 
-    const sizes = [
+    let sizes = [
         {
-            value: "XS",
-            label: 'XS',
+            value: 8,
+            label: "8",
         },
         {
-            value: "S",
-            label: 'S',
+            value: 9,
+            label: "9",
         },
         {
-            value: "M",
-            label: "M",
+            value: 10,
+            label: "10",
         },
         {
-            value: "L",
-            label: "L",
+            value: 11,
+            label: "11",
         },
         {
-            value: "XL",
-            label: "XL",
+            value: 12,
+            label: "12",
         },
         {
-            value: "XXL",
-            label: "XXL",
+            value: 13,
+            label: "13",
         },
         {
-            value: "3XL",
-            label: "3XL",
+            value: 14,
+            label: "14",
         },
-       
-      
+        {
+            value: 15,
+            label: "15",
+        },
+        {
+            value: 16,
+            label: "16",
+        },
     ];
 
 
 
-    const handleSelectChange = (e) => {
-        setCurrentSize(e.target.value);
+    let handleSelectChange = (e) => {
+        setCurrentSize(Number(e.target.value));
     };
 
-    const handleAddSize = () => {
+    let handleAddSize = () => {
         if (currentSize && !selectedSizes.includes(currentSize)) {
-            setSelectedSizes([...selectedSizes, currentSize]); 
+            setSelectedSizes([...selectedSizes, currentSize]);
             setNewArticle({ ...newArticle, sizes: selectedSizes })
         }
-        setCurrentSize(''); 
+        setCurrentSize("");
     };
 
     let addItem = async () => {
         try {
-            console.log("preparing to send request")
-            console.log(newArticle)
-            let response = await axios.post("http://localhost:5757/tops/tops", newArticle);
-            console.log("request sent")
-            settopsall(prev => [...prev, response.data]);
-        }
-        catch (e) {
-            console.log(e.message)
-        }
+            console.log("preparing to send request");
+            console.log(newArticle);
 
-    }
-    let deleteItem = async (item) => {
-        try {
 
-            const response = await axios.delete(`http://localhost:5757/tops/deletetops/${item._id}`);
-            console.log('Article deleted:', response.data);
-            settopsall(topsall.filter((e) => e._id !== item._id))
-            setOpenWarning(false);
-        } catch (error) {
-            console.error('Error deleting article:', error);
+
+            let response = await axios.post(
+                "http://localhost:5757/tops/tops", newArticle, { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if (response) {
+                let response2 = await axios.post(
+                    "http://localhost:5757/allproducts/post", { ...newArticle, _id: response.data._id }, { headers: { Authorization: `Bearer ${token}` } }
+                );
+                console.log("request sent");
+                setdata(prevSneakers => [...prevSneakers, response.data]);
+            }
+        } catch (e) {
+            console.error("Error adding to cart:", e.message);
         }
     };
-
+    let deleteItem = async (item) => {
+        try {
+            let response = await axios.delete(
+                `http://localhost:5757/tops/deletetops/${item._id}`,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            let response2 = await axios.delete(
+                `http://localhost:5757/allproducts/delete/${item._id}`,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            console.log("Sneaker deleted:", response.data);
+            setdata(data.filter((e) => e._id !== item._id));
+            setOpenWarning(false);
+        } catch (e) {
+            console.error("Error adding to cart:", e.message);
+        }
+    };
     let handleeditItem = (item) => {
 
-        setitemtoedit({ ...item});
+        setitemtoedit({ ...item });
         setstartedit(true);
 
     }
     // let [sizenumber, setsizenumber] = useState([])
     let sizehandler = (e) => {
-        const value = e.target.value; //konstantnost
+        let value = Number(e.target.value); //konstantnost
         setsizenumber((prevSizenumber) => {
             let updatedSizenumber = [...prevSizenumber];
 
@@ -257,10 +274,7 @@ let TopsAll = ({ user, setuser }) => {
     };
     //editovanje itema
     let editItem = async (id) => {
-
-      
-
-        let toEdit = { 
+        let toEdit = {
             name: editedArticle.name || itemtoedit.name,
             brand: editedArticle.brand || itemtoedit.brand,
             price: editedArticle.price || itemtoedit.price,
@@ -268,102 +282,227 @@ let TopsAll = ({ user, setuser }) => {
             color: editedArticle.color || itemtoedit.color,
             imageUrl: editedArticle.imageUrl || itemtoedit.imageUrl,
             description: editedArticle.description || itemtoedit.description,
-            sizes: [...sizenumber], 
-            _id: id 
+            sizes: [...sizenumber],
+            _id: id
         };
 
-        console.log(sizenumber)
-        settopsall(topsall.map((e) => e._id !== id ? e : { ...e, ...toEdit }))
+        console.log(sizenumber);
+        setdata(data.map((e) => e._id !== id ? e : { ...e, ...toEdit }));
 
         try {
-            let response = await axios.put("http://localhost:5757/tops/edittop", toEdit)
-        
-            setstartedit(false)
+            let response = await axios.put(
+                "http://localhost:5757/tops/edittop",
+                toEdit,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            let response2 = await axios.put(
+                "http://localhost:5757/allproducts/edit",
+                toEdit,
+                { headers: { Authorization: `Bearer ${token}` } } 
+            );
+            setstartedit(false);
         } catch (e) {
-            console.log(e.message)
+            console.error("Error adding to cart:", e.message);
         }
-
-    }
+    };
 
     let handleOpenWarning = (item) => {
         setItemToDelete({ ...item });
         setOpenWarning(true);
     };
-    return (<>
-        {!topsall.length ?
-            <Box sx={{ display: 'flex', height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
+
+
+
+
+
+    let addToCart = async (product) => {
+        console.log(cart);
+
+
+
+
+        if (user) {
+
+
+            let item = {
+                user: user._id,
+                items: [
+                    {
+                        productId: product._id,
+                        quantity: 1
+                    }
+                ],
+            };
+            let existingItemIndex = cart.findIndex((e) => e.productId === product._id);
+
+            if (existingItemIndex !== -1) {
+
+
+                let updatedCart = cart.map((e, index) =>
+                    index === existingItemIndex ? { ...e, quantity: e.quantity + 1 } : e
+                );
+
+
+                setCart(updatedCart);
+                console.log(updatedCart[existingItemIndex]);
+
+
+                try {
+                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: updatedCart[existingItemIndex] });
+                    console.log("Cart updated successfully");
+                } catch (e) {
+                    console.error("Error adding to cart:", e.message);
+                }
+
+            } else {
+                let newArticle = { productId: product._id, quantity: 1 }
+                let newCart = [...cart, newArticle];
+
+
+
+                console.log(cart)
+
+
+
+
+
+                try {
+                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: newArticle });
+                    setCart(newCart);
+                    console.log("Item added to cart successfully");
+                } catch (e) {
+                    console.error("Error adding to cart:", e.message);
+                }
+
+            }
+        } else {
+
+            let item = {
+                items: [
+                    {
+                        name: product.name,
+                        brand: product.brand,
+                        imageUrl: product.imageUrl,
+                        price: product.price,
+                        sizes: [...product.sizes],
+                        productId: product?._id,
+                        quantity: 1
+                    }
+                ],
+            };
+
+
+            let existingItemIndex = cart.findIndex((e) => e.productId === product._id);
+            console.log(existingItemIndex)
+            if (existingItemIndex !== -1) {
+
+
+
+
+                let updatedCart = cart.map((e, index) =>
+                    index === existingItemIndex ? { ...e, quantity: e.quantity + 1 } : e
+                );
+                setCart(updatedCart);
+                sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
+            } else {
+
+                setCart((prevCart) => {
+                    let updatedCart = [...prevCart, ...item.items];
+                    sessionStorage.setItem("cartitems", JSON.stringify(updatedCart));
+                    console.log(updatedCart)
+                    return updatedCart;
+                });
+            }
+
+            console.log(product);
+
+        };
+    }
+
+    return (<div style={{ height: "100%" }}>
+        {!data.length ?
+            <Box sx={{ display: "flex", height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
                 <CircularProgress size={140} />
             </Box> :
 
-            <>  
+            <>
                 <Grid
-  container
-  sx={{
-    padding: { xs: 0, md: "1rem" },
-    justifyContent: "flex-start", 
-    alignItems: "center", 
-    minHeight: "100vh" 
-  }}
-  spacing={{ xs: 1, md: 1 }}
-  columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
->
-  {topsall.map((e, index) => (
-    <Grid item xs={12} sm={4} md={4} key={index} >
-      <Card sx={{ maxWidth: 345, padding: "1rem", margin: "auto" }}>
-        {(user?.role === "admin") && (
-          <Box sx={{ display: "flex", justifyContent: "space-around", gap: "1rem", backgroundColor: "#f4f2f3", borderRadius: "10px" }}>
-            <Button size="small" color="success" sx={{ display: "flex", gap: "8px", alignItems: "center" }} onClick={() => handleeditItem(e)}>
-              <EditNoteIcon />EDIT
-            </Button>
-            <Button size="small" color="error" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "coral" }} onClick={() => handleOpenWarning(e)}>
-              <DeleteForeverIcon />DELETE
-            </Button>
-          </Box>
-        )}
-        <CardMedia
-          sx={{ height: 300, padding: "1rem" }}
-          image={e?.imageUrl}
-          title={e?.name}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h7" component="div" sx={{ fontWeight: "bold" }}>
-            {e?.name}
-          </Typography>
-          <Box sx={{ backgroundColor: "white", display: "flex", flexDirection: "column" }}>
-            <Typography gutterBottom variant="h9" component="div" sx={{ color: "#ed6b01" }}>
-              <Typography variant="h10" sx={{ color: "black" }}>Price: </Typography>
-              {"  " + e?.price + " BAM"}
-            </Typography>
-            <Typography variant="h10" sx={{ color: "black" }}>Brand: {"  " + e.brand}</Typography>
-            <Typography variant="h10" sx={{ color: "black" }}>Color: {"  " + e.color}</Typography>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Box sx={{ display: "flex", justifyContent: "space-between", gap: "1rem", width: "100%" }}>
-            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/tops`)}>
-              <InfoIcon />DETAILS
-            </Button>
-            <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }}>
-              <ShoppingBasketIcon /> PURCHASE
-            </Button>
-          </Box>
-        </CardActions>
-      </Card>
-    </Grid>
-  ))}
-
-{user ? <Box sx={{ width: "345px", maxWidth: 345, height: "432px", padding: "1rem", display: "flex", justifyContent: "center", flexDirection: "column" }}>
-                        <AddCircleIcon onClick={handleOpen} sx={{
-                            fontSize: 140, alignSelf: "center", justifySelf: "center", transition: 'color 0.3s',
-                            '&:hover': {
-                                color: 'lightblue', 
-                            },
-                            '&:active': {
-                                color: 'green', 
-                            }
-                        }} /> <Typography sx={{ alignSelf: "center" }}>ADD ITEM</Typography></Box> : null}
-</Grid>
-
+                    container
+                    sx={{
+                        padding: { xs: 0, md: "1rem" },
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        minHeight: "100vh",
+                    }}
+                    spacing={{ xs: 1, md: 1 }}
+                    columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
+                >
+                    {data.map((e, index) => (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            key={index}
+                        >
+                            <Card sx={{ maxWidth: "100%", padding: "1rem", margin: "auto" }}>
+                                {user?.role === "admin" && (
+                                    <Box sx={{ display: "flex", justifyContent: "space-around", gap: "1rem", backgroundColor: "#f4f2f3", borderRadius: "10px" }}>
+                                        <Button size="small" color="success" sx={{ display: "flex", gap: "8px", alignItems: "center" }} onClick={() => handleeditItem(e)}>
+                                            <EditNoteIcon />EDIT
+                                        </Button>
+                                        <Button size="small" color="error" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "coral" }} onClick={() => handleOpenWarning(e)}>
+                                            <DeleteForeverIcon />DELETE
+                                        </Button>
+                                    </Box>
+                                )}
+                                <CardMedia
+                                    sx={{
+                                        height: 170,
+                                        width: "100%",
+                                        padding: "0.5rem",
+                                        objectFit: "cover",
+                                    }}
+                                    image={e?.imageUrl}
+                                    title={e?.name}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h7" component="div" sx={{ fontWeight: "bold" }}>
+                                        {e?.name}
+                                    </Typography>
+                                    <Box sx={{ backgroundColor: "white", display: "flex", flexDirection: "column" }}>
+                                        <Typography gutterBottom variant="h9" component="div" sx={{ color: "#ed6b01" }}>
+                                            <Typography variant="h10" sx={{ color: "black" }}>Price:</Typography>
+                                            {" " + e?.price + " BAM"}
+                                        </Typography>
+                                        <Typography variant="h10" sx={{ color: "black" }}>Brand: {" " + e.brand}</Typography>
+                                        <Typography variant="h10" sx={{ color: "black" }}>Color: {" " + e.color}</Typography>
+                                    </Box>
+                                </CardContent>
+                                <CardActions>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between", gap: "1rem", width: "100%" }}>
+                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/tops`)}>
+                                            <InfoIcon />DETAILS
+                                        </Button>
+                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }} onClick={() => addToCart(e)}>
+                                            <ShoppingBasketIcon /> PURCHASE
+                                        </Button>
+                                    </Box>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+                    {user && (
+                        <Box sx={{ width: "345px", maxWidth: 345, height: "432px", padding: "1rem", display: "flex", justifyContent: "center", flexDirection: "column", margin: "auto" }}>
+                            <AddCircleIcon onClick={handleOpen} sx={{
+                                fontSize: 140, alignSelf: "center", justifySelf: "center", transition: "color 0.3s",
+                                "&:hover": { color: "lightblue" },
+                                "&:active": { color: "green" },
+                            }} />
+                            <Typography sx={{ alignSelf: "center" }}>ADD ITEM</Typography>
+                        </Box>
+                    )}
+                </Grid>
                 <div>
 
                     <Modal
@@ -416,7 +555,7 @@ let TopsAll = ({ user, setuser }) => {
                             </Box>
 
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                                 <TextField
                                     id="outlined-select-sizes"
                                     select
@@ -442,7 +581,7 @@ let TopsAll = ({ user, setuser }) => {
                                     disabled
                                     id="standard-disabled"
                                     label=""
-                                    value={selectedSizes.join(', ')} 
+                                    value={selectedSizes.join(", ")}
                                     variant="standard"
                                 />
 
@@ -499,7 +638,7 @@ let TopsAll = ({ user, setuser }) => {
                                 <Box id="modal-modal-description" sx={{ mt: 2, display: "flex", flexDirection: "row", gap: "1rem", justifyContent: "flex-end" }}>
                                     <Button
                                         variant="outlined"
-                                        sx={{ color: "white", borderColor: " white", '&:hover': { borderColor: "#f7ed7e", color: "#f7ed7e" }, '&:active': { borderColor: "orange" } }}
+                                        sx={{ color: "white", borderColor: " white", "&:hover": { borderColor: "#f7ed7e", color: "#f7ed7e" }, "&:active": { borderColor: "orange" } }}
                                         onClick={() => setOpenWarning(false)}
                                     >
                                         Cancel
@@ -508,7 +647,7 @@ let TopsAll = ({ user, setuser }) => {
                                     <Button
                                         onClick={() => deleteItem(itemToDelete)}
                                         variant="contained"
-                                        sx={{ color: "white", backgroundColor: "red", '&:hover': { backgroundColor: "darkred" } }}
+                                        sx={{ color: "white", backgroundColor: "red", "&:hover": { backgroundColor: "darkred" } }}
                                     >
                                         DELETE
                                     </Button>
@@ -542,10 +681,10 @@ let TopsAll = ({ user, setuser }) => {
                                     defaultValue={itemtoedit.name}
                                     variant="standard"
                                     onChange={(e) => {
-                                        const value = e.target.value.trim(); 
+                                        let value = e.target.value.trim();
                                         setEditedArticle((prev) => ({
                                             ...prev,
-                                            name: value !== "" ? value : itemtoedit.name, 
+                                            name: value !== "" ? value : itemtoedit.name,
                                         }));
                                     }}
                                 />
@@ -558,10 +697,10 @@ let TopsAll = ({ user, setuser }) => {
                                         variant="standard"
                                         sx={{ width: "60%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim();
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                brand: value !== "" ? value : itemtoedit.brand, 
+                                                brand: value !== "" ? value : itemtoedit.brand,
                                             }));
                                         }}
                                     />
@@ -576,35 +715,35 @@ let TopsAll = ({ user, setuser }) => {
                                         inputProps={{ min: 0 }}
                                         defaultValue={itemtoedit.price}
                                         onChange={(e) => {
-                                            const value = Number(e.target.value.trim()); 
+                                            let value = Number(e.target.value.trim());
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                price: value !== "" ? value : itemtoedit.price, 
+                                                price: value !== "" ? value : itemtoedit.price,
                                             }));
                                         }}
                                     />
 
                                 </Box>
 
-                                <Box sx={{ border: "1px solid green", padding: 4, position: 'relative' }}>
+                                <Box sx={{ border: "1px solid green", padding: 4, position: "relative" }}>
                                     <Typography
                                         variant="h7"
                                         sx={{
-                                            position: 'absolute',
+                                            position: "absolute",
                                             top: -14,
                                             left: 16,
-                                            backgroundColor: '#d3d3d3',
-                                            color: '#737373',
-                                            padding: '0 8px',
+                                            backgroundColor: "#d3d3d3",
+                                            color: "#737373",
+                                            padding: "0 8px",
 
                                         }}
                                     >
                                         Sizes
                                     </Typography>
-                                    <Grid container spacing={2} sx={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
+                                    <Grid container spacing={1} sx={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center" }}>
 
 
-                                        <FormControl sx={{ display: "flex", flexDirection: "row", gap: "1rem", justifyContent: "center", alignItems: "center" }} >
+                                        <FormControl sx={{ display: "flex", flexDirection: "row", gap: "0rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }} >
 
                                             {sizes.map((item) =>
                                                 <FormControlLabel
@@ -628,6 +767,7 @@ let TopsAll = ({ user, setuser }) => {
 
                                     </Grid>
                                 </Box>
+                              
 
 
                                 <Box sx={{ display: "flex", flexDirection: "row", gap: "1rem" }} >
@@ -639,10 +779,10 @@ let TopsAll = ({ user, setuser }) => {
                                         variant="standard"
                                         sx={{ width: "30%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim(); 
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                color: value !== "" ? value : itemtoedit.color, 
+                                                color: value !== "" ? value : itemtoedit.color,
                                             }));
                                         }}
                                     />
@@ -654,10 +794,10 @@ let TopsAll = ({ user, setuser }) => {
                                         variant="standard"
                                         sx={{ width: "60%" }}
                                         onChange={(e) => {
-                                            const value = e.target.value.trim(); 
+                                            let value = e.target.value.trim();
                                             setEditedArticle((prev) => ({
                                                 ...prev,
-                                                imageUrl: value !== "" ? value : itemtoedit.umageUrl, 
+                                                imageUrl: value !== "" ? value : itemtoedit.umageUrl,
                                             }));
                                         }}
                                     />
@@ -670,10 +810,10 @@ let TopsAll = ({ user, setuser }) => {
                                     fullWidth
                                     defaultValue={itemtoedit.description}
                                     onChange={(e) => {
-                                        const value = e.target.value.trim(); 
+                                        let value = e.target.value.trim();
                                         setEditedArticle((prev) => ({
                                             ...prev,
-                                            description: value !== "" ? value : itemtoedit.description, 
+                                            description: value !== "" ? value : itemtoedit.description,
                                         }));
                                     }}
                                 />
@@ -694,9 +834,11 @@ let TopsAll = ({ user, setuser }) => {
 
             </>
 
-        } </>
+
+        } </div>
     )
 }
+
 
 
 export default TopsAll

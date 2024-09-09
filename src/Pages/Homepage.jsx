@@ -51,10 +51,7 @@ let Homepage = ({user, setuser}) => {
 
                 </div>
                 <Shortlist/>
-                <Box sx={{ position: 'relative', padding: '4rem 0' }}>
-  <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'url(/path/to/shape.svg)' }} />
-  {/* Your section content */}
-</Box>
+   
                 <Shortlist2/>
 
             

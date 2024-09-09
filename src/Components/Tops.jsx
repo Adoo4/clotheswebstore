@@ -58,10 +58,10 @@ let Tops = ({user, setuser}) => {
              color: "white",
              backgroundColor: "black",
              alignSelf: "flex-end",
-             borderColor: 'gray', // Optional: change the border color if needed
+             borderColor: 'gray', 
              '&:hover': {
-               borderColor: 'white', // Optional: ensure the border color remains white on hover
-               backgroundColor: 'gray', // Optional: change background color on hover
+               borderColor: 'white', 
+               backgroundColor: 'gray', 
                
              }
            }}>VIEW MORE</Button>
@@ -79,7 +79,7 @@ let Tops = ({user, setuser}) => {
                    flexDirection: 'column',
                    alignItems: 'center',
                    justifyContent: 'stretch',
-                   height: '100%',  // Ensure the Box takes the full height of the Grid item
+                   height: '100%',  
                    border: 'none'
                  }}
                >
@@ -88,8 +88,8 @@ let Tops = ({user, setuser}) => {
                      maxWidth: 280,
                      display: 'flex',
                      flexDirection: 'column',
-                     flexGrow: 1, // Make the card grow to fill the available space
-                     height: '100%', // Ensure the Card takes the full height of the Box
+                     flexGrow: 1, 
+                     height: '100%', 
                      justifyContent: "space-between",
                      alignItems: "center",
                      boxShadow: 'none' 
@@ -97,10 +97,10 @@ let Tops = ({user, setuser}) => {
                    }}
                  >
                    <CardActionArea sx={{
-     boxShadow: 'none', // Remove drop shadow
+     boxShadow: 'none', 
      '&:hover': {
-       boxShadow: 'none', // Remove hover effect shadow
-       backgroundColor: 'inherit', // Ensure no background change on hover
+       boxShadow: 'none',
+       backgroundColor: 'inherit', 
      },
    }}>
                      <CardMedia sx={{ width: "100%", objectFit: "contain", height: "200px"}}
@@ -112,9 +112,9 @@ let Tops = ({user, setuser}) => {
                        
                      />
                      <CardContent  sx={{
-       boxShadow: 'none', // Ensure no shadow on the content
+       boxShadow: 'none', 
        '&:hover': {
-         boxShadow: 'none', // Remove hover effect on content
+         boxShadow: 'none', 
        },
      }}>
                        <Typography gutterBottom variant="h6" component="div">

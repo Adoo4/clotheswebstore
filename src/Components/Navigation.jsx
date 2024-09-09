@@ -28,12 +28,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import CottageIcon from '@mui/icons-material/Cottage';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
+import HistoryIcon from '@mui/icons-material/History';
 
 
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 
-const StyledSearch = styled("div")(({ theme }) => ({
+let StyledSearch = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: "#444444",
@@ -49,7 +50,7 @@ const StyledSearch = styled("div")(({ theme }) => ({
   }
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
+let SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -60,7 +61,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   
 }));
 
-const SearchIconWrapper2 = styled("div")(({ theme }) => ({
+let SearchIconWrapper2 = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
   position: "absolute",
@@ -72,7 +73,7 @@ const SearchIconWrapper2 = styled("div")(({ theme }) => ({
   
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+let StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
@@ -86,8 +87,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 
-//search as JSX
-const search = (
+
+let search = (
   <StyledSearch>
     <SearchIconWrapper>
       <SearchIcon />
@@ -99,22 +100,24 @@ const search = (
   </StyledSearch>
 );
 
-export default function Navigation({ user, setuser, cart, setcart }) {
+export default function Navigation({ user, setuser, cart, isDrawerOpen, setDrawerOpen, setCart  }) {
   
-  const [open, setState] = useState(false);
+  let [open, setState] = useState(false);
   let [searchKey, setSearchKey] = useState("")
 
   let navigation = useNavigate();
 
   let Logout = () => {
     setuser(null);
+    setCart([])
     localStorage.removeItem("LocalShopAuth")
     sessionStorage.removeItem("LocalShopAuth")
+    
 
   }
 
  
-  const toggleDrawer = (open) => (event) => {
+  let toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -150,7 +153,7 @@ function notificationsLabel(count) {
       <Container maxWidth="xl" disableGutters={true}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 700 }}>
-            <Box component="span" sx={{ display: 'flex', flexDirection: "row", alignItems: "center", width: '35%' }} onClick={() => navigation("/")}>
+            <Box component="span" sx={{ display:{xs: "flex", sm:"none", md:"flex"}, flexDirection: "row", alignItems: "center", width: '35%' }} onClick={() => navigation("/")}>
               <img src="https://i.postimg.cc/7hbr9PMX/Shop-Local-Logo-2.png" alt="Logo" style={{ width: '100px', minWidth: "100px" }} />
 
             </Box>
@@ -207,7 +210,7 @@ function notificationsLabel(count) {
                 <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center" }}>
 
 
-                  <StyledSearch>
+                  <StyledSearch sx={{display:{xs:"flex"}}}>
                     <SearchIconWrapper2 sx={{color:"white"}} onClick={startSearch}>
                       <SearchIcon onClick={startSearch} />
                     </SearchIconWrapper2>
@@ -218,7 +221,7 @@ function notificationsLabel(count) {
                       inputProps={{ "aria-label": "search" }}
                       onChange={(e)=>setSearchKey(e.target.value)}
                     />
-                    <Button sx={{display:{sm: "none", md:"inline"}, color:"orange"}} onClick={startSearch}>GO</Button>
+                    <Button sx={{display:{xs: "none",sm:"flex", md:"inline"}, color:"orange"}} onClick={startSearch}>GO</Button>
                   </StyledSearch >
 
                   {(user?.role === "admin") ? (<Button variant="outlined" color="warning" sx={{
@@ -326,28 +329,79 @@ function notificationsLabel(count) {
                   transform: "translate(-50%, 0)"
                 }}
               >
-                <Button variant="outlined" sx={{
-                  m: 1, width: 0.5, color: "#f8cd4c", borderColor: "#f8cd4c", '&:hover': {
-                    backgroundColor: "#e6b837", 
-                    borderColor: "white", backgroundColor: "#171A1C", color: "white" 
-                  }, '&:active': {
-                    backgroundColor: "#e6b837", 
-                    borderColor: "white", backgroundColor: "#171A1C", color: "white" 
-                  }
-                }}>
-                  Register
-                </Button>
-                <Button variant="contained" sx={{
-                  m: 1, width: 0.5, backgroundColor: "#f8cd4c", color: "#171A1C", '&:hover': {
-                    backgroundColor: "#e6b837", 
-                    color: "black", backgroundColor: "white" 
-                  }, '&:active': {
-                    backgroundColor: "#e6b837", 
-                    color: "black", backgroundColor: "white" 
-                  }
-                }}>
-                  Login
-                </Button>
+                {!user ? (
+  <>
+    <Button
+      variant="outlined"
+      sx={{
+        m: 1,
+        width: 0.5,
+        color: "#f8cd4c",
+        borderColor: "#f8cd4c",
+        '&:hover': {
+          backgroundColor: "#171A1C",
+          borderColor: "white",
+          color: "white",
+        },
+        '&:active': {
+          backgroundColor: "#171A1C",
+          borderColor: "white",
+          color: "white",
+        },
+      }}
+      onClick={()=>navigation("/register")}
+    >
+      Register
+    </Button>
+    <Button
+      variant="contained"
+      sx={{
+        m: 1,
+        width: 0.5,
+        backgroundColor: "#f8cd4c",
+        color: "#171A1C",
+        '&:hover': {
+          backgroundColor: "#e6b837",
+          color: "black",
+          backgroundColor: "white",
+        },
+        '&:active': {
+          backgroundColor: "#e6b837",
+          color: "black",
+          backgroundColor: "white",
+        },
+      }}
+      onClick={()=>navigation("/login")}
+    >
+      Login
+    </Button>
+  </>
+) : (
+  <Button
+    variant="outlined"
+    sx={{
+      m: 1,
+      width: 1,
+      padding:"1rem",
+      color: "#f8cd4c",
+      borderColor: "#f8cd4c",
+      '&:hover': {
+        backgroundColor: "#171A1C",
+        borderColor: "white",
+        color: "white",
+      },
+      '&:active': {
+        backgroundColor: "#171A1C",
+        borderColor: "white",
+        color: "white",
+      },
+      
+    }}
+    onClick={Logout}
+  >
+    Logout
+  </Button>
+)}
               </Box>
             </Box>
           </Drawer>
@@ -355,14 +409,17 @@ function notificationsLabel(count) {
         </Toolbar>
         
       </Container>
+
+      
       <Box style={{backgroundColor: "#444444", width: "100%", height: "35px", display: "flex", alignItems:"center", justifyContent:"flex-end", paddingRight:"3rem", gap:"1rem"}}>
-      {cart.length? <Chip  color="warning" label="CHECKOUT" size="small" /> : null}
-        
-        
-        
-      <Badge badgeContent={cart.length} color="warning">
+        <HistoryIcon/>
+      {cart?.length? (<> <Badge badgeContent={cart?.length} color="warning" onClick={()=>{setDrawerOpen(true); console.log(cart)}}>
       <LocalMallIcon color="action" sx={{color:"white"}} />
-    </Badge>
+    </Badge> </> ): null}
+        
+        
+        
+     
     
    
 
