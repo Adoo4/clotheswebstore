@@ -55,7 +55,7 @@ function App() {
       let sessionData = sessionStorage.getItem("LocalShopAuth");
       if (tokenData) { 
         try {
-          let response = await axios.post("http://localhost:5757/user/Authentication", {}, {
+          let response = await axios.post("https://backend-nffn.onrender.com/user/Authentication", {}, {
             headers: {
               Authorization: `Bearer ${tokenData}`
             }
@@ -68,7 +68,7 @@ function App() {
         }
       } else if (sessionData) {
         try {
-          let response = await axios.post("http://localhost:5757/user/Authentication", {}, {
+          let response = await axios.post("https://backend-nffn.onrender.com/user/Authentication", {}, {
             headers: {
               Authorization: `Bearer ${sessionData}`
             }
@@ -89,7 +89,7 @@ function App() {
   useEffect(() => {
     const getAllData = async () => {
         try {
-            const response = await axios.get("http://localhost:5757/allproducts/get");
+            const response = await axios.get("https://backend-nffn.onrender.com/allproducts/get");
             const allProducts = response.data;
 
             if (allProducts && allProducts.length > 0) {
@@ -107,7 +107,7 @@ function App() {
 useEffect(() => {
   let getCartItems = async () => {
       try {
-          let response = await axios.post("http://localhost:5757/cart/getusercart", { userId: user._id });
+          let response = await axios.post("https://backend-nffn.onrender.com/cart/getusercart", { userId: user._id });
           if(response.data?.items?.length) {
             setCart(response.data.items);
             
