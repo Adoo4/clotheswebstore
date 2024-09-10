@@ -94,7 +94,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
 
         }
         
-    }, [itemtoedit]);
+    }, [itemtoedit, sizenumber]);
 
 
     let handleOpen = () => setOpen(true);

@@ -94,7 +94,7 @@ let TopsAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
 
         }
         console.log("Poslje", sizenumber)
-    }, [itemtoedit]);
+    }, [itemtoedit, sizenumber]);
 
 
     let handleOpen = () => setOpen(true);
