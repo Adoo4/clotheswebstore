@@ -25,7 +25,7 @@ let Shortlist = ({user, setuser}) => {
 
     let limited = async () => {
       try {
-        let response = await axios.get("http://localhost:5757/bottoms/getbottomslimit")
+        let response = await axios.get("https://backend-nffn.onrender.com/bottoms/getbottomslimit")
         console.log(response.data)
         setData(response.data || [])
 

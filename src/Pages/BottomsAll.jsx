@@ -72,7 +72,7 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
     useEffect(() => {
         let getSnakers = async () => {
             try {
-                let response = await axios.get("http://localhost:5757/bottoms/getbottoms")
+                let response = await axios.get("https://backend-nffn.onrender.com/bottoms/getbottoms")
 
                 setdata(response.data)
 
@@ -216,12 +216,12 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
 
 
             let response = await axios.post(
-                "http://localhost:5757/bottoms/bottoms", newArticle, { headers: { Authorization: `Bearer ${token}` } }
+                "https://backend-nffn.onrender.com/bottoms/bottoms", newArticle, { headers: { Authorization: `Bearer ${token}` } }
             );
 
             if (response) {
                  await axios.post(
-                    "http://localhost:5757/allproducts/post", { ...newArticle, _id: response.data._id }, { headers: { Authorization: `Bearer ${token}` } }
+                    "https://backend-nffn.onrender.com/allproducts/post", { ...newArticle, _id: response.data._id }, { headers: { Authorization: `Bearer ${token}` } }
                 );
                 console.log("request sent");
                 setdata(prevSneakers => [...prevSneakers, response.data]);
@@ -233,10 +233,10 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
     let deleteItem = async (item) => {
         try {
             let response = await axios.delete(
-                `http://localhost:5757/bottoms/deletebottoms/${item._id}`,
+                `https://backend-nffn.onrender.com/bottoms/deletebottoms/${item._id}`,
                 { headers: { Authorization: `Bearer ${token}` } } 
             );
-            await axios.delete(`http://localhost:5757/allproducts/delete/${item._id}`, { headers: { Authorization: `Bearer ${token}` } } 
+            await axios.delete(`https://backend-nffn.onrender.com/allproducts/delete/${item._id}`, { headers: { Authorization: `Bearer ${token}` } } 
             );
             console.log("Sneaker deleted:", response.data);
             setdata(data.filter((e) => e._id !== item._id));
@@ -288,12 +288,12 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
 
         try {
             await axios.put(
-                "http://localhost:5757/bottoms/editbottom",
+                "https://backend-nffn.onrender.com/bottoms/editbottom",
                 toEdit,
                 { headers: { Authorization: `Bearer ${token}` } } 
             );
              await axios.put(
-                "http://localhost:5757/allproducts/edit",
+                "https://backend-nffn.onrender.com/allproducts/edit",
                 toEdit,
                 { headers: { Authorization: `Bearer ${token}` } } 
             );
@@ -345,7 +345,7 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
 
 
                 try {
-                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: updatedCart[existingItemIndex] });
+                    await axios.put("https://backend-nffn.onrender.com/cart/update", { user: user._id, items: updatedCart[existingItemIndex] });
                     console.log("Cart updated successfully");
                 } catch (e) {
                     console.error("Error adding to cart:", e.message);
@@ -364,7 +364,7 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
 
 
                 try {
-                    await axios.put("http://localhost:5757/cart/update", { user: user._id, items: newArticle });
+                    await axios.put("https://backend-nffn.onrender.com/cart/update", { user: user._id, items: newArticle });
                     setCart(newCart);
                     console.log("Item added to cart successfully");
                 } catch (e) {

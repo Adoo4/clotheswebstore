@@ -45,7 +45,7 @@ let Checkout = ({ isDrawerOpen, setDrawerOpen, user, cart, setCart }) => {
     let fetchCartItems = async () => {
       if (user) {
         try {
-          let response = await axios.post("http://localhost:5757/cart/getcart", { userId: user._id });
+          let response = await axios.post("https://backend-nffn.onrender.com/cart/getcart", { userId: user._id });
           setItemsInCart(response.data.items || []);
         } catch (e) {
           console.error("Error fetching cart items:", e);
@@ -69,7 +69,7 @@ let Checkout = ({ isDrawerOpen, setDrawerOpen, user, cart, setCart }) => {
 
       }
       try {
-        let response = await axios.post("http://localhost:5757/purchased/get", purchasedArticle)
+        let response = await axios.post("https://backend-nffn.onrender.com/purchased/get", purchasedArticle)
         if (response.data) {
           setPurchased(response.data)
           console.log("ovo je purchased", response.data)
@@ -109,7 +109,7 @@ let Checkout = ({ isDrawerOpen, setDrawerOpen, user, cart, setCart }) => {
 
 
       try {
-        let response = await axios.put("http://localhost:5757/cart/deletecartitems", { id, userId });
+        let response = await axios.put("https://backend-nffn.onrender.com/cart/deletecartitems", { id, userId });
 
         setCart(response.data.items);
 
@@ -140,8 +140,8 @@ let Checkout = ({ isDrawerOpen, setDrawerOpen, user, cart, setCart }) => {
         value: total
       }
       try {
-        await axios.post("http://localhost:5757/purchased/post", purchasedArticle)
-        let response = await axios.delete(`http://localhost:5757/cart/delete-by-user/${userId}`);
+        await axios.post("https://backend-nffn.onrender.com/purchased/post", purchasedArticle)
+        let response = await axios.delete(`https://backend-nffn.onrender.com/cart/delete-by-user/${userId}`);
         console.log(response.data);
         setCart([])
         setItemsInCart([])

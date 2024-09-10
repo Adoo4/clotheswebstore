@@ -34,7 +34,7 @@ let Registerpage = () => {
     e.preventDefault();
     try{
       console.log("request sent")
-      let response = await axios.post("http://localhost:5757/user/register", newuser);
+      let response = await axios.post("https://backend-nffn.onrender.com/user/register", newuser);
       console.log(response.data);
       setnotify(true)
       setTimeout(()=>setnotify(false), 3000)

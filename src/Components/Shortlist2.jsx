@@ -22,7 +22,7 @@ let Shortlist2 = ({user, setuser}) => {
 
     let limitedTops = async () => {
       try {
-        let response = await axios.get("http://localhost:5757/accessories/getaccessorieslimit")
+        let response = await axios.get("https://backend-nffn.onrender.com/accessories/getaccessorieslimit")
         console.log(response.data)
         setdata(response.data || [])
 

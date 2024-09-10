@@ -22,7 +22,7 @@ let Sneakers = ({user, setuser}) => {
 
     let limitedSneakers = async () => {
       try {
-        let getlimitedsneakers = await axios.get("http://localhost:5757/sneakers/getsneakerslimit")
+        let getlimitedsneakers = await axios.get("https://backend-nffn.onrender.com/sneakers/getsneakerslimit")
         console.log(getlimitedsneakers.data)
         setdata(getlimitedsneakers.data || [])
 

@@ -18,7 +18,7 @@ let DetailsPage = () => {
         let getDetails = async () => {
             if (name === "sneakers") {
                 try {
-                    let response = await axios.get("http://localhost:5757/sneakers/getdetails", {
+                    let response = await axios.get("https://backend-nffn.onrender.com/sneakers/getdetails", {
                         params: { id: id }
                     });
                     setArticleDetails(response.data)
@@ -31,7 +31,7 @@ let DetailsPage = () => {
 
             if (name === "tops") {
                 try {
-                    let response = await axios.get("http://localhost:5757/tops/getdetails", {
+                    let response = await axios.get("https://backend-nffn.onrender.com/tops/getdetails", {
                         params: { id: id }
                     });
                     setArticleDetails(response.data)
@@ -45,7 +45,7 @@ let DetailsPage = () => {
 
             if (name === "bottoms") {
                 try {
-                    let response = await axios.get("http://localhost:5757/bottoms/getdetails", {
+                    let response = await axios.get("https://backend-nffn.onrender.com/bottoms/getdetails", {
                         params: { id: id }
                     });
                     setArticleDetails(response.data)

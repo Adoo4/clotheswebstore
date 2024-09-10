@@ -22,7 +22,7 @@ let Tops = ({user, setuser}) => {
 
     let limitedTops = async () => {
       try {
-        let response = await axios.get("http://localhost:5757/tops/gettopslimit")
+        let response = await axios.get("https://backend-nffn.onrender.com/tops/gettopslimit")
         console.log(response.data)
         setdata(response.data || [])
 

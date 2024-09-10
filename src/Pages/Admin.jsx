@@ -52,7 +52,7 @@ let Admin = ({ user, setuser }) => {
   useEffect(() => {
     let getUsers = async () => {
       try {
-        let response = await axios.get("http://localhost:5757/user/getusers");
+        let response = await axios.get("https://backend-nffn.onrender.com/user/getusers");
         if (response) {
           setusers(response.data);
           setoriginalusers(response.data)
@@ -117,7 +117,7 @@ let Admin = ({ user, setuser }) => {
     console.log(usertoupdate)
 
     try {
-      let response = await axios.put("http://localhost:5757/user/userupdate", usertoupdate, { headers: { Authorization: `Bearer ${token}` } })
+      let response = await axios.put("https://backend-nffn.onrender.com/user/userupdate", usertoupdate, { headers: { Authorization: `Bearer ${token}` } })
 
       setusers(users.map((item) => item._id === response.data._id ? { ...response.data, editable: false, edit: true } : { ...item, editable: false, edit: true }))
 
@@ -142,7 +142,7 @@ let Admin = ({ user, setuser }) => {
   let deleteItem = async (user) => {
     try {
 
-      let response = await axios.delete(`http://localhost:5757/user/deleteuser/${user._id}`, { headers: { Authorization: `Bearer ${token}` } });
+      let response = await axios.delete(`https://backend-nffn.onrender.com/user/deleteuser/${user._id}`, { headers: { Authorization: `Bearer ${token}` } });
       console.log('User deleted:', response.data);
       setusers(users.filter((e) => e._id !== user._id))
       setOpenWarning(false);
