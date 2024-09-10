@@ -96,6 +96,7 @@ let search = (
     <StyledInputBase
       placeholder="Search…"
       inputProps={{ "aria-label": "search" }}
+      onChange={(e)=>setSearchKey(e.target.value)}
     />
   </StyledSearch>
 );
