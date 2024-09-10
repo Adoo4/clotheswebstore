@@ -5,9 +5,7 @@ import Sneakers from "../Components/Sneakers"
 import Tops from "../Components/Tops"
 import Shortlist from "../Components/Bottoms"
 import Shortlist2 from "../Components/Shortlist2"
-import Box from "@mui/material/Box";
 
-import {useState} from 'react'
 
 import "./Homepage.css"
 let Homepage = ({user, setuser}) => {

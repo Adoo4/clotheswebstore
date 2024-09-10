@@ -12,7 +12,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 
 

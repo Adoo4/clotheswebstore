@@ -32,7 +32,7 @@ import HistoryIcon from '@mui/icons-material/History';
 
 
 import Badge from '@mui/material/Badge';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 let StyledSearch = styled("div")(({ theme }) => ({
   position: "relative",
@@ -135,15 +135,7 @@ export default function Navigation({ user, setuser, cart, isDrawerOpen, setDrawe
 
 //CART NOTOFIKACIJA
 
-function notificationsLabel(count) {
-  if (count === 0) {
-    return 'no notifications';
-  }
-  if (count > 99) {
-    return 'more than 99 notifications';
-  }
-  return `${count} notifications`;
-}
+
 
 
 
@@ -160,7 +152,7 @@ function notificationsLabel(count) {
 
           </Typography>
           <Box sx={{
-            display: "flex", gap: "1rem", mr: "2rem", display: {
+            gap: "1rem", mr: "2rem", display: {
               xs: "none",
               md: "none",
               lg: "none",
@@ -225,12 +217,12 @@ function notificationsLabel(count) {
                   </StyledSearch >
 
                   {(user?.role === "admin") ? (<Button variant="outlined" color="warning" sx={{
-                    display: "flex", gap: "5px", alignItems: "center", backgroundColor: "#ED6C02", color: "white", display: {
+                     gap: "5px", alignItems: "center", backgroundColor: "#ED6C02", color: "white", display: {
                       xs: "none",
                       md: "flex"
                     }
                   }} onClick={() => navigation("/admin")}><SupervisorAccountIcon sx={{ fontSize: "medium", alignSelf: "center", }} />Admin </Button>) : (<Button variant="outlined" color="warning" sx={{
-                    display: "flex", gap: "5px", alignItems: "center", backgroundColor: "#ED6C02", color: "white", display: {
+                    gap: "5px", alignItems: "center", backgroundColor: "#ED6C02", color: "white", display: {
                       xs: "none",
                       md: "flex"
                     }
@@ -361,12 +353,12 @@ function notificationsLabel(count) {
         backgroundColor: "#f8cd4c",
         color: "#171A1C",
         '&:hover': {
-          backgroundColor: "#e6b837",
+          
           color: "black",
           backgroundColor: "white",
         },
         '&:active': {
-          backgroundColor: "#e6b837",
+          
           color: "black",
           backgroundColor: "white",
         },

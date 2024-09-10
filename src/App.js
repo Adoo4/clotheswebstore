@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios'
 
 import './App.css';
@@ -19,7 +19,7 @@ import Adminpage from './Pages/Admin';
 import PrivatnaRuta from './Components/PrivatnaRuta';
 import AccesRoute from './Pages/AccessRoute';
 import SearchData from './Pages/Search';
-import Cart from './Pages/Cart';
+
 import Checkout from './Components/Checkout';
 
 
@@ -81,35 +81,27 @@ function App() {
         }
       }
     };
-  if(!user){
+  
     authenticateUser();
-}  }, []);
+  }, []);
 
 
-useEffect(()=> {
-let getAllData = async () => {
-try {
-  let allProducts = await axios.get("http://localhost:5757/allproducts/get");
+  useEffect(() => {
+    const getAllData = async () => {
+        try {
+            const response = await axios.get("http://localhost:5757/allproducts/get");
+            const allProducts = response.data;
 
-  if(allProducts){
+            if (allProducts && allProducts.length > 0) {
+                          setAllData(allProducts); 
+                         }
+        } catch (error) {
+            console.error("Failed to fetch data:", error);
+        }
+    };
 
-   let combinedData = ([
-     ...allProducts
-    ]);
-
-   
-
-    setAllData([...combinedData])
-  }
- 
-  } catch(e) {
-
-    console.log(e)
-  }
-}
-getAllData();
-
-} , [])
+    getAllData();
+}, []);
 
 
 useEffect(() => {
@@ -157,7 +149,6 @@ useEffect(() => {
         <Route path="/:id/:name" element={<DetailsPage />} />
         <Route path="search/:searchquery" element={<SearchData allData={allData} setAllData={setAllData} />} />
         <Route path="/admin" element={<PrivatnaRuta user={user}><Adminpage user={user} /></PrivatnaRuta>} />
-        <Route path="/cart" element={<Cart user={user}  cart={cart} setCart={setCart} />} />
       </Routes>
       <Footer />
     </BrowserRouter>

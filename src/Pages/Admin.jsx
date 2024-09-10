@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react'
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
+
 import axios from 'axios'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Button from '@mui/material/Button';
@@ -37,7 +37,6 @@ let Admin = ({ user, setuser }) => {
   let [users, setusers] = useState([])
   let [openWarning, setOpenWarning] = useState(false);
   let [itemToDelete, setItemToDelete] = useState(null);
-  let [userSearch, setuserSearch] = useState(null)
   let [originalusers, setoriginalusers] = useState([])
 
   let [itemtoedit, setitemtoedit] = useState({
@@ -72,7 +71,6 @@ let Admin = ({ user, setuser }) => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: "70%",
     bgcolor: '#f65656',
 
     boxShadow: 24,
@@ -292,7 +290,7 @@ let Admin = ({ user, setuser }) => {
 
                     :
 
-                    <TableCell align="center" sx={{ display: { xs: 'flex', md: 'flex', md: 'table-cell' } }}>{e.role}</TableCell>
+                    <TableCell align="center" sx={{ display: { xs: 'flex',  md: 'table-cell' } }}>{e.role}</TableCell>
 
 
                   }

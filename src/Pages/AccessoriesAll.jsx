@@ -33,7 +33,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
     let [open, setOpen] = useState(false);
     let [selectedSizes, setSelectedSizes] = useState([]);
     let [currentSize, setCurrentSize] = useState("");
-    let [error, seterror] = useState("")
+   
     let [newArticle, setNewArticle] = useState({
         name: "",
         brand: "",
@@ -93,7 +93,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
             setsizenumber([...itemtoedit.sizes]);
 
         }
-        console.log("Poslje", sizenumber)
+        
     }, [itemtoedit]);
 
 
@@ -114,7 +114,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
 
 
     let style = {
-        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "70%",
+        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
         bgcolor: "lightgray",
         boxShadow: 24,
         p: 4,
@@ -133,7 +133,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: "70%",
+        
         bgcolor: "#f65656",
 
         boxShadow: 24,
@@ -220,7 +220,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
             );
 
             if (response) {
-                let response2 = await axios.post(
+                 await axios.post(
                     "http://localhost:5757/allproducts/post", { ...newArticle, _id: response.data._id }, { headers: { Authorization: `Bearer ${token}` } }
                 );
                 console.log("request sent");
@@ -235,7 +235,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
             let response = await axios.delete(
                 `http://localhost:5757/accessories/deleteaccessories/${item._id}`,{ headers: { Authorization: `Bearer ${token}` } } 
             );
-            let response2 = await axios.delete(
+              await axios.delete(
                 `http://localhost:5757/allproducts/delete/${item._id}`,{ headers: { Authorization: `Bearer ${token}` } }
             );
             console.log("Sneaker deleted:", response.data);
@@ -276,7 +276,6 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
             name: editedArticle.name || itemtoedit.name,
             brand: editedArticle.brand || itemtoedit.brand,
             price: editedArticle.price || itemtoedit.price,
-            sizes: editedArticle.sizes.length > 0 ? editedArticle.sizes : itemtoedit.sizes,
             color: editedArticle.color || itemtoedit.color,
             imageUrl: editedArticle.imageUrl || itemtoedit.imageUrl,
             description: editedArticle.description || itemtoedit.description,
@@ -288,12 +287,12 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
         setdata(data.map((e) => e._id !== id ? e : { ...e, ...toEdit }));
 
         try {
-            let response = await axios.put(
+             await axios.put(
                 "http://localhost:5757/accessories/editaccessory",
                 toEdit,
                 { headers: { Authorization: `Bearer ${token}` } } 
             );
-            let response2 = await axios.put(
+            await axios.put(
                 "http://localhost:5757/allproducts/edit",
                 toEdit,
                 { headers: { Authorization: `Bearer ${token}` } } 
@@ -322,15 +321,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
         if (user) {
 
 
-            let item = {
-                user: user._id,
-                items: [
-                    {
-                        productId: product._id,
-                        quantity: 1
-                    }
-                ],
-            };
+           
             let existingItemIndex = cart.findIndex((e) => e.productId === product._id);
 
             if (existingItemIndex !== -1) {
@@ -686,7 +677,7 @@ let AccessoriesAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) =
                                         }));
                                     }}
                                 />
-                                <Box sx={{ display: "flex", flexDirection: "row", gap: "1rem", flexWrap: "wrap", gap: "1rem" }}  >
+                                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: "1rem" }}  >
                                     <TextField
                                         required
                                         id="standard-required"

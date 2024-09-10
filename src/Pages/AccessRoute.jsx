@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
+
 import { useNavigate } from 'react-router-dom';
 import {useEffect} from 'react'
 
@@ -17,7 +17,7 @@ useEffect(()=>{
     },3000)
 
 
-}, [])
+}, [navigation])
 
 
 
