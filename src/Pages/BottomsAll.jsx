@@ -429,7 +429,7 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
                         padding: { xs: 0, md: "1rem" },
                         justifyContent: "flex-start",
                         alignItems: "center",
-                        minHeight: "100vh",
+                        minHeight: "100%",
                     }}
                     spacing={{ xs: 1, md: 1 }}
                     columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
@@ -455,7 +455,7 @@ let Bottoms = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
                                 )}
                                 <CardMedia
                                     sx={{
-                                        height: 170,
+                                        height: 400,
                                         width: "100%",
                                         padding: "0.5rem",
                                         objectFit: "cover",

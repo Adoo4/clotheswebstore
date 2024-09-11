@@ -480,7 +480,7 @@ let SneakersAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
                                 </CardContent>
                                 <CardActions>
                                     <Box sx={{ display: "flex", justifyContent: "space-between", gap: "1rem", width: "100%" }}>
-                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/bottoms`)}>
+                                        <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "black" }} onClick={() => navigation(`/${e._id}/sneakers`)}>
                                             <InfoIcon />DETAILS
                                         </Button>
                                         <Button size="small" sx={{ display: "flex", gap: "8px", alignItems: "center", color: "#ed6b01" }} onClick={() => addToCart(e)}>

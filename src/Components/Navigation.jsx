@@ -88,18 +88,7 @@ let StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-let search = (
-  <StyledSearch>
-    <SearchIconWrapper>
-      <SearchIcon />
-    </SearchIconWrapper>
-    <StyledInputBase
-      placeholder="Search…"
-      inputProps={{ "aria-label": "search" }}
-      onChange={(e)=>setSearchKey(e.target.value)}
-    />
-  </StyledSearch>
-);
+
 
 export default function Navigation({ user, setuser, cart, isDrawerOpen, setDrawerOpen, setCart  }) {
   
@@ -116,6 +105,19 @@ export default function Navigation({ user, setuser, cart, isDrawerOpen, setDrawe
     
 
   }
+
+  let search = (
+    <StyledSearch>
+      <SearchIconWrapper>
+        <SearchIcon />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Search…"
+        inputProps={{ "aria-label": "search" }}
+        onChange={(e)=>setSearchKey(e.target.value)}
+      />
+    </StyledSearch>
+  );
 
  
   let toggleDrawer = (open) => (event) => {

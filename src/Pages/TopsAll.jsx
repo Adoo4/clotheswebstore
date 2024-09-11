@@ -417,7 +417,7 @@ let TopsAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
         };
     }
 
-    return (<div style={{ height: "100%" }}>
+    return (<div style={{ minHeight: "100%" }}>
         {!data.length ?
             <Box sx={{ display: "flex", height: "70dvh", width: "100%", justifyContent: "center", alignItems: "center" }} >
                 <CircularProgress size={140} />
@@ -430,7 +430,7 @@ let TopsAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
                         padding: { xs: 0, md: "1rem" },
                         justifyContent: "flex-start",
                         alignItems: "center",
-                        minHeight: "100vh",
+                        minHeight: "100%",
                     }}
                     spacing={{ xs: 1, md: 1 }}
                     columns={{ xs: 1, sm: 8, md: 12, xl: 20 }}
@@ -456,7 +456,7 @@ let TopsAll = ({ user, setuser, cart, setCart, cartItem, setCartItem }) => {
                                 )}
                                 <CardMedia
                                     sx={{
-                                        height: 170,
+                                        height: 300,
                                         width: "100%",
                                         padding: "0.5rem",
                                         objectFit: "cover",
